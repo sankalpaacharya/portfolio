@@ -12,7 +12,6 @@ export function BodyWrapper({
   children: React.ReactNode;
   className: string;
 }) {
-  const wallpaper = useStore((state) => state.wallpaper);
   const brightness = useStore((state) => state.brightness);
 
   return (
