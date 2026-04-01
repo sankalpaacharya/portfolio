@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import StatusBar from "@/components/status-bar";
 import { TerminalUI } from "@/components/terminal";
 import FileManager from "@/components/file-manager";
+import { WebPet } from "@/components/web-pet";
 import { LoginManager } from "@/components/chatcn/system/login-manager";
 import { ApplicationManager } from "@/components/chatcn/system/app-manager";
 import Browser from "@/components/chatcn/system/browser";
@@ -72,7 +73,7 @@ export default function Page() {
     title: string,
     params: Record<string, unknown>,
     referencePanel?: IDockviewPanel,
-    defaultDirection?: "below" | "right"
+    defaultDirection?: "below" | "right",
   ) => {
     const position = referencePanel
       ? {
@@ -129,7 +130,7 @@ export default function Page() {
         "Browser",
         { url: "https://www.google.com/webhp?igu=1" },
         terminalPanel,
-        "below"
+        "below",
       );
       panelRefs.current.set("browser", true);
     }
@@ -146,7 +147,7 @@ export default function Page() {
         "File Manager",
         {},
         referencePanel,
-        "right"
+        "right",
       );
       panelRefs.current.set("file-manager", true);
     }
@@ -208,6 +209,7 @@ export default function Page() {
           </div>
 
           <div className="flex-1 overflow-hidden">
+            <WebPet animal="cockatiel" color="brown" speed={4} scale={0.55} />
             <DockviewReact
               onReady={onReady}
               components={components}

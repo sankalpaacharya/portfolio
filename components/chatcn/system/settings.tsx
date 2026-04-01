@@ -49,7 +49,7 @@ export function SettingsContent() {
       <div
         className={cn(
           "grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4",
-          isLoading && "hidden"
+          isLoading && "hidden",
         )}
       >
         {Object.keys(wallpapers).map((item) => (
@@ -69,7 +69,7 @@ export function SettingsContent() {
 
                 wallpaper === wallpapers[item]
                   ? "ring-2 sm:ring-4 ring-blue-500 ring-offset-1 sm:ring-offset-2 ring-offset-background"
-                  : "hover:ring-2 hover:ring-gray-400"
+                  : "hover:ring-2 hover:ring-gray-400",
               )}
             />
             <p className="text-center mt-1 sm:mt-2 text-xs sm:text-sm capitalize">

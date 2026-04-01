@@ -13,11 +13,12 @@ export function BodyWrapper({
   className: string;
 }) {
   const brightness = useStore((state) => state.brightness);
+  const wallpaper = useStore((state) => state.wallpaper);
 
   return (
     <body
       className={className}
-      style={{ backgroundImage: `url(https://github.com/sankalpaacharya/portfolio/blob/main/public/wallpapers/gamer.png?raw=true)` }}
+      style={{ backgroundImage: `url(${wallpaper})` }}
     >
       {/* <TimeSpent /> */}
       <Toaster position="top-right" />
