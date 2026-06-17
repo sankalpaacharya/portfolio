@@ -20,7 +20,7 @@ import "dockview/dist/styles/dockview.css";
 const customTheme: DockviewTheme = {
   name: "custom-theme",
   className: "dockview-theme-minimal",
-  gap: 4,
+  gap: 8,
 };
 
 const components = {
