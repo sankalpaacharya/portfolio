@@ -6,10 +6,16 @@ import { BodyWrapper } from "@/components/body-wrapper";
 import { ThemeManager } from "@/components/theme-manager";
 import { THEMES, DEFAULT_THEME } from "@/lib/themes";
 
-// Applies the persisted color theme before first paint to avoid a flash.
-const themeBootstrap = `(function(){try{var t=localStorage.getItem('theme');var m=${JSON.stringify(
+// Applies the persisted color theme and wallpaper before first paint, both to
+// avoid a flash and to keep SSR/client markup identical (no localStorage on the
+// server would otherwise cause a hydration mismatch).
+const themeVars = JSON.stringify(
   Object.fromEntries(Object.values(THEMES).map((t) => [t.id, t.vars])),
-)};var v=m[t]||m['${DEFAULT_THEME}'];var r=document.documentElement;for(var k in v){r.style.setProperty(k,v[k]);}}catch(e){}})();`;
+);
+const themeWallpapers = JSON.stringify(
+  Object.fromEntries(Object.values(THEMES).map((t) => [t.id, t.wallpaper ?? ""])),
+);
+const themeBootstrap = `(function(){try{var t=localStorage.getItem('theme');var r=document.documentElement;var m=${themeVars};var v=m[t]||m['${DEFAULT_THEME}'];for(var k in v){r.style.setProperty(k,v[k]);}var w=${themeWallpapers};var img=localStorage.getItem('wallpaper')||w[t]||w['${DEFAULT_THEME}'];if(img){r.style.setProperty('--wallpaper','url('+img+')');}}catch(e){}})();`;
 
 const jetbrains = JetBrains_Mono({
   subsets: ["latin"],

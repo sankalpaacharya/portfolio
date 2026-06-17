@@ -50,7 +50,7 @@ const components = {
 export default function Page() {
   const [isLogin, setIsLogin] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  const { apps, closeApp } = useStore();
+  const { apps, closeApp, wallpaper } = useStore();
   const apiRef = useRef<DockviewReadyEvent | null>(null);
   const panelRefs = useRef<Map<string, boolean>>(new Map());
 
@@ -201,7 +201,11 @@ export default function Page() {
     <div className="h-screen flex flex-col overflow-hidden">
       <ApplicationManager />
       {!isLogin ? (
-        <LoginManager portal={true} onLogin={() => setIsLogin(true)} />
+        <LoginManager
+          portal={true}
+          wallpaper={wallpaper}
+          onLogin={() => setIsLogin(true)}
+        />
       ) : (
         <>
           <div className="flex-none">
