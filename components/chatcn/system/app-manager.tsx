@@ -11,6 +11,8 @@ import {
   CommandDialog,
 } from "@/components/ui/command";
 import { useStore } from "@/store/useStore";
+import { THEME_LIST } from "@/lib/themes";
+import { Check, Palette, ChevronLeft } from "lucide-react";
 
 interface Application {
   name: string;
@@ -85,9 +87,12 @@ const applications: Record<string, Application[]> = {
   ],
 };
 
+type Page = "root" | "themes";
+
 export function ApplicationManager() {
   const [open, setOpen] = useState(false);
-  const { openApp } = useStore();
+  const [page, setPage] = useState<Page>("root");
+  const { openApp, theme, setTheme } = useStore();
 
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
@@ -100,6 +105,11 @@ export function ApplicationManager() {
     document.addEventListener("keydown", down);
     return () => document.removeEventListener("keydown", down);
   }, []);
+
+  // Always start from the root page when the palette is reopened.
+  useEffect(() => {
+    if (!open) setPage("root");
+  }, [open]);
 
   const handleAppClick = (app: Application) => {
     if (app.url) {
@@ -123,40 +133,120 @@ export function ApplicationManager() {
     }
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    // Backspace on an empty input steps back from the themes page.
+    if (
+      e.key === "Backspace" &&
+      page !== "root" &&
+      (e.target as HTMLInputElement).value === ""
+    ) {
+      e.preventDefault();
+      setPage("root");
+    }
+  };
+
   return (
     <CommandDialog open={open} onOpenChange={setOpen}>
       <Command className="rounded-lg border shadow-md md:min-w-[550px]">
-        <CommandInput placeholder="Search applications..." />
+        <CommandInput
+          placeholder={
+            page === "themes" ? "Search themes..." : "Search applications..."
+          }
+          onKeyDown={handleKeyDown}
+        />
         <CommandList>
-          <CommandEmpty>No applications found.</CommandEmpty>
+          <CommandEmpty>
+            {page === "themes" ? "No themes found." : "No applications found."}
+          </CommandEmpty>
 
-          {Object.entries(applications).map(([category, apps], index) => (
-            <div key={category}>
-              {index > 0 && <CommandSeparator />}
-              <CommandGroup heading={category}>
-                {apps.map((app) => (
-                  <CommandItem
-                    key={app.name}
-                    onSelect={() => handleAppClick(app)}
-                    className="cursor-pointer"
-                  >
-                    <div className="flex items-center gap-3 w-full">
-                      <div className="relative w-6 h-6 shrink-0">
-                        <img
-                          src={app.icon}
-                          alt={app.name}
-                          width={24}
-                          height={24}
-                          className="object-contain"
-                        />
-                      </div>
-                      <span className="flex-1">{app.name}</span>
-                    </div>
-                  </CommandItem>
-                ))}
+          {page === "root" && (
+            <>
+              {Object.entries(applications).map(([category, apps], index) => (
+                <div key={category}>
+                  {index > 0 && <CommandSeparator />}
+                  <CommandGroup heading={category}>
+                    {apps.map((app) => (
+                      <CommandItem
+                        key={app.name}
+                        onSelect={() => handleAppClick(app)}
+                        className="cursor-pointer"
+                      >
+                        <div className="flex items-center gap-3 w-full">
+                          <div className="relative w-6 h-6 shrink-0">
+                            <img
+                              src={app.icon}
+                              alt={app.name}
+                              width={24}
+                              height={24}
+                              className="object-contain"
+                            />
+                          </div>
+                          <span className="flex-1">{app.name}</span>
+                        </div>
+                      </CommandItem>
+                    ))}
+                  </CommandGroup>
+                </div>
+              ))}
+
+              <CommandSeparator />
+              <CommandGroup heading="Personalization">
+                <CommandItem
+                  onSelect={() => setPage("themes")}
+                  className="cursor-pointer"
+                >
+                  <div className="flex items-center gap-3 w-full">
+                    <Palette className="w-5 h-5 shrink-0" />
+                    <span className="flex-1">Themes</span>
+                    <span className="text-xs text-muted-foreground capitalize">
+                      {theme.replace("-", " ")}
+                    </span>
+                  </div>
+                </CommandItem>
               </CommandGroup>
-            </div>
-          ))}
+            </>
+          )}
+
+          {page === "themes" && (
+            <CommandGroup heading="Themes">
+              <CommandItem
+                onSelect={() => setPage("root")}
+                className="cursor-pointer text-muted-foreground"
+              >
+                <div className="flex items-center gap-3 w-full">
+                  <ChevronLeft className="w-5 h-5 shrink-0" />
+                  <span className="flex-1">Back</span>
+                </div>
+              </CommandItem>
+              {THEME_LIST.map((t) => (
+                <CommandItem
+                  key={t.id}
+                  value={`theme ${t.label}`}
+                  onSelect={() => {
+                    setTheme(t.id);
+                    setOpen(false);
+                  }}
+                  className="cursor-pointer"
+                >
+                  <div className="flex items-center gap-3 w-full">
+                    <div className="flex shrink-0 overflow-hidden rounded-md border">
+                      {t.swatch.map((color, i) => (
+                        <span
+                          key={i}
+                          className="w-3 h-6"
+                          style={{ backgroundColor: color }}
+                        />
+                      ))}
+                    </div>
+                    <span className="flex-1">{t.label}</span>
+                    {theme === t.id && (
+                      <Check className="w-4 h-4 shrink-0 text-primary" />
+                    )}
+                  </div>
+                </CommandItem>
+              ))}
+            </CommandGroup>
+          )}
         </CommandList>
       </Command>
     </CommandDialog>

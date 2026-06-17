@@ -12,6 +12,9 @@ export function SettingsContent() {
     gamer: "/wallpapers/gamer.png",
     battle: "/wallpapers/battle.png",
     dark: "/wallpapers/dark.png",
+    arcade: "/wallpapers/arcade.png",
+    "tokyo night": "/wallpapers/tokyo-night.png",
+    gruvbox: "/wallpapers/gruvbox.png",
   };
 
   const totalImages = Object.keys(wallpapers).length;
