@@ -16,6 +16,7 @@ import ZeroTwoReadMe from "./renders/zerotwo";
 import { Experience } from "./renders/experience";
 import Reflection from "./renders/reflection";
 import Blogs from "./renders/blogs";
+import { Hobbies } from "./renders/hobbies";
 
 const data: FileNode[] = [
   {
@@ -222,6 +223,11 @@ const data: FileNode[] = [
     type: "file",
     name: "Blogs.md",
     render: <Blogs />,
+  },
+  {
+    type: "file",
+    name: "Hobbies.md",
+    render: <Hobbies />,
   },
 ];
 

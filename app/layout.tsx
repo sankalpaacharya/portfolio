@@ -17,10 +17,35 @@ const jetbrains = JetBrains_Mono({
   display: "swap",
 });
 
+const description =
+  "I'm Sankalpa Acharya, 3rd-year Computer Science student driven to build software that lasts. Skilled in React, Golang, and Linux systems. I believe in creating solutions that are fast, reliable, and built to make a difference. Whenever I feel like to share my knowledge I write @blogs.";
+
 export const metadata: Metadata = {
+  metadataBase: new URL("https://sankalpa.info.np"),
   title: "Sankalpa Acharya",
-  description:
-    "I'm Sankalpa Acharya, 3rd-year Computer Science student driven to build software that lasts. Skilled in React, Golang, and Linux systems. I believe in creating solutions that are fast, reliable, and built to make a difference. Whenever I feel like to share my knowledge I write @blogs.",
+  description,
+  openGraph: {
+    title: "Sankalpa Acharya",
+    description,
+    url: "https://sankalpa.info.np",
+    siteName: "Sankalpa Acharya",
+    type: "website",
+    images: [
+      {
+        url: "/wallpapers/gamer.png",
+        width: 1200,
+        height: 675,
+        alt: "Sankalpa Acharya",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Sankalpa Acharya",
+    description,
+    creator: "@sankalpa_02",
+    images: ["/wallpapers/gamer.png"],
+  },
 };
 
 export default function RootLayout({
